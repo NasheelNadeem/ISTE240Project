@@ -1,4 +1,4 @@
-package org.example.spiritassignment1group4;
+package org.example.spiritassignment1group4.models;
 
 import org.springframework.stereotype.Component;
 
@@ -7,12 +7,6 @@ public class Doctor {
     private String name;
     private String doctorID;
     private String profession;
-
-    public Doctor(String name, String doctorID, String profession) {
-        this.name = name;
-        this.doctorID = doctorID;
-        this.profession = profession;
-    }
 
     public String getName() {
         return name;
