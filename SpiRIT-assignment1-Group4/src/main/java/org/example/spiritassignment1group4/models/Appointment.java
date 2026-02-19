@@ -1,4 +1,4 @@
-package org.example.data;
+package org.example.spiritassignment1group4.models;
 
 import org.springframework.stereotype.Component;
 
@@ -13,13 +13,6 @@ public class Appointment {
     private Data date;
     private Time time;
 
-    public Appointment(Patient patient, Doctor doctor, String department, Data date, Time time) {
-        this.patient = patient;
-        this.doctor = doctor;
-        this.department = department;
-        this.date = date;
-        this.time = time;
-    }
 
     public Patient getPatient() {
         return patient;
