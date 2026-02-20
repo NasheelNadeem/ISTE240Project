@@ -5,25 +5,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class Feedback {
 
-    private String patientName;
-    private String doctorName;
+    private Patient patient;
+    private Doctor doctor;
     private int rating;
     private String comment;
 
-    public String getPatientName() {
-        return patientName;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public String getDoctorName() {
-        return doctorName;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public int getRating() {
@@ -45,8 +45,8 @@ public class Feedback {
     @Override
     public String toString() {
         return "Feedback{" +
-                "patientName='" + patientName + '\'' +
-                ", doctorName='" + doctorName + '\'' +
+                "patient=" + patient +
+                ", doctor=" + doctor +
                 ", rating=" + rating +
                 ", comment='" + comment + '\'' +
                 '}';
