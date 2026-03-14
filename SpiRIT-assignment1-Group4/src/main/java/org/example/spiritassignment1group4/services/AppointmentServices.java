@@ -52,14 +52,8 @@ public class AppointmentServices {
         return this.appointments;
     }
 
-    public void saveAppointment(Patient patient, Doctor doctor, String department, String date, String time){
-        var newAppointment = new Appointment();
-        newAppointment.setPatient(patient);
-        newAppointment.setDoctor(doctor);
-        newAppointment.setDepartment(department);
-        newAppointment.setDate(date);
-        newAppointment.setTime(time);
-        this.appointments.add(newAppointment);
+    public void addAppointment(Appointment appointment) {
+        this.appointments.add(appointment);
     }
 
 }

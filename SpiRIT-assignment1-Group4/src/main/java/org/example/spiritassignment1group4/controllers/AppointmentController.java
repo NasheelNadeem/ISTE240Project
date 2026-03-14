@@ -6,43 +6,65 @@ import org.example.spiritassignment1group4.models.Patient;
 import org.example.spiritassignment1group4.services.AppointmentServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AppointmentController {
-    private AppointmentServices aptServ;
+    private final AppointmentServices appointmentService;
 
     public AppointmentController(AppointmentServices aptServ) {
-        this.aptServ = aptServ;
+        this.appointmentService = aptServ;
     }
 
     @GetMapping("/appointments")
     public String viewAppointment (Model data){
-        data.addAttribute("appointments", aptServ.findAllAppointments());
-        return "appointments";
+        data.addAttribute("appointments", appointmentService.findAllAppointments());
+        return "appointments"; // appointments.mustache
     }
 
     @GetMapping("/addAppointment")
-    public String addAppointmentForm(Model data){
-        return "redirect:addAppointment.html";
+    public String addAppointmentForm(){
+        // Since the requirement is a static page in the static folder
+        return "redirect:/addAppointment.html";
     }
 
     @PostMapping("/addAppointment")
-    public String addAppointment(@RequestParam Patient patient, @RequestParam Doctor doctor, @RequestParam String department, @RequestParam String date, @RequestParam String time, Model data){
-        aptServ.saveAppointment(patient, doctor, department, date, time);
-        return "redirect:success";
+    public String addAppointment(
+            @RequestParam("doctor") String doctorName,
+            @RequestParam("patient") String patientName,
+            @RequestParam("department") String department,
+            @RequestParam("date") String date,
+            @RequestParam("time") String time) {
+
+        // Manually assemble the object
+        Appointment appointment = new Appointment();
+        appointment.setDepartment(department);
+        appointment.setDate(date);
+        appointment.setTime(time);
+
+        Patient p = new Patient();
+        p.setName(patientName);
+        appointment.setPatient(p);
+
+        Doctor d = new Doctor();
+        d.setName(doctorName);
+        appointment.setDoctor(d);
+
+        appointmentService.addAppointment(appointment);
+
+        // Required path variable redirect
+        return "redirect:/add/success/appointment";
     }
 
-    @GetMapping("/success") // [cite: 60, 61]
-    public String showSuccess(Model data) {
-        // Inject the entity name into the confirmation message template [cite: 62]
-        data.addAttribute(aptServ.findAllAppointments().get(aptServ.findAllAppointments().size()-1));
-        return "success";
+    @GetMapping("/add/success/{entityName}")
+    public String showSuccess(@PathVariable String entityName, Model data) {
+        data.addAttribute("entity", entityName);
+
+        // Passing the last item to the template for display
+        var list = appointmentService.findAllAppointments();
+        if (!list.isEmpty()) {
+            data.addAttribute("recent", list.get(list.size() - 1));
+        }
+        return "success"; // success.mustache
     }
-
-
-
-
 }
