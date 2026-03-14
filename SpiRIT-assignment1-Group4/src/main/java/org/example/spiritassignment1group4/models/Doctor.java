@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Doctor {
     private String name;
-    private String doctorID;
+    private int doctorID;
     private String profession;
 
     public String getName() {
@@ -16,11 +16,11 @@ public class Doctor {
         this.name = name;
     }
 
-    public String getDoctorID() {
+    public int getDoctorID() {
         return doctorID;
     }
 
-    public void setDoctorID(String doctorID) {
+    public void setDoctorID(int doctorID) {
         this.doctorID = doctorID;
     }
 

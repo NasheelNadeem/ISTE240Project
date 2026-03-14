@@ -1,18 +1,24 @@
-package org.example.data;
+package org.example.spiritassignment1group4.models;
 
 import org.springframework.stereotype.Component;
 
 import javax.xml.crypto.Data;
+import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.time.LocalDate;
 
-@Component
 public class Appointment {
     private Patient patient;
     private Doctor doctor;
     private String department;
-    private Data date;
-    private Time time;
+    private String date;
+    private String time;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> efa1023204aca994916c8d76bf8b34caec5f45c3
     public Patient getPatient() {
         return patient;
     }
@@ -37,7 +43,21 @@ public class Appointment {
         this.department = department;
     }
 
+    public String getDate() {
+        return date;
+    }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     @Override
     public String toString() {
