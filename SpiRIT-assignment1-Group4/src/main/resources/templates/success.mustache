@@ -5,6 +5,13 @@
     <title>Success</title>
 </head>
 <body>
-<h2>Your appointment with {{doctor}}, on {{date}}, at {{time}} has been added successfully.</h2>
+<h2>Thank you. {{entity}} data was added successfully!</h2>
+
+{{#recent}}
+    <p>Details: Dr. {{doctor.name}} with Patient {{patient.name}} on {{date}}.</p>
+{{/recent}}
+
+<br>
+<a href="/index.html">Back to Home Page</a>
 </body>
 </html>
