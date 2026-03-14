@@ -7,6 +7,12 @@ public class Patient {
     private String name;
     private int patientID;
 
+    public Patient(String name, int patientID) {
+        this.name = name;
+        this.patientID = patientID;
+    }
+    public Patient() {}
+
     public String getName() {
         return name;
     }

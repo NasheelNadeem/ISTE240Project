@@ -15,10 +15,6 @@ public class Appointment {
     private String date;
     private String time;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> efa1023204aca994916c8d76bf8b34caec5f45c3
     public Patient getPatient() {
         return patient;
     }
