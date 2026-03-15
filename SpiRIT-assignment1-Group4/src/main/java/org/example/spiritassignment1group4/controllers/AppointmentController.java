@@ -36,7 +36,7 @@ public class AppointmentController {
             @RequestParam("date") String date,
             @RequestParam("time") String time) {
 
-        // Manually assemble the object
+
         Appointment appointment = new Appointment();
         appointment.setDepartment(department);
         appointment.setDate(date);
@@ -52,7 +52,7 @@ public class AppointmentController {
 
         appointmentService.addAppointment(appointment);
 
-        // Required path variable redirect
+
         return "redirect:/add/success/appointment";
     }
 
@@ -60,7 +60,6 @@ public class AppointmentController {
     public String showSuccess(@PathVariable String entityName, Model data) {
         data.addAttribute("entity", entityName);
 
-        // Passing the last item to the template for display
         var list = appointmentService.findAllAppointments();
         if (!list.isEmpty()) {
             data.addAttribute("recent", list.get(list.size() - 1));
