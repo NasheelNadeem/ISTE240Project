@@ -4,21 +4,22 @@ import org.example.spiritassignment1group4.models.Appointment;
 import org.example.spiritassignment1group4.models.Doctor;
 import org.example.spiritassignment1group4.models.Patient;
 import org.example.spiritassignment1group4.services.AppointmentServices;
+import org.example.spiritassignment1group4.services.ProjectServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AppointmentController {
-    private final AppointmentServices appointmentService;
+    private ProjectServices projectServices;
 
-    public AppointmentController(AppointmentServices aptServ) {
-        this.appointmentService = aptServ;
+    public AppointmentController(ProjectServices projectServices) {
+        this.projectServices = projectServices;
     }
 
     @GetMapping("/appointments")
     public String viewAppointment (Model data){
-        data.addAttribute("appointments", appointmentService.findAllAppointments());
+        data.addAttribute("appointments", projectServices.findAllAppointments());
         return "appointments"; // appointments.mustache
     }
 
@@ -50,7 +51,7 @@ public class AppointmentController {
         d.setName(doctorName);
         appointment.setDoctor(d);
 
-        appointmentService.addAppointment(appointment);
+        projectServices.addAppointment(appointment);
 
 
         return "redirect:/add/success/appointment";
@@ -60,7 +61,7 @@ public class AppointmentController {
     public String showSuccess(@PathVariable String entityName, Model data) {
         data.addAttribute("entity", entityName);
 
-        var list = appointmentService.findAllAppointments();
+        var list = projectServices.findAllAppointments();
         if (!list.isEmpty()) {
             data.addAttribute("recent", list.get(list.size() - 1));
         }

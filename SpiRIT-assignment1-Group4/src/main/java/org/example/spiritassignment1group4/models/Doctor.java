@@ -2,7 +2,6 @@ package org.example.spiritassignment1group4.models;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class Doctor {
     private String name;
     private int doctorID;
