@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Account Table</title>
+    <title>Users Table</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -10,26 +10,25 @@
     </style>
 </head>
 <body>
-    <h2>User Account Table</h2>
-    <table class="ui striped table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Role</th>
-            </tr>
-        </thead>
-        <tbody>
-        {{#userAccounts}}
-            <tr>
-                <td>{{userName}}</td>
-                <td>{{password}}</td>
-                <td>{{role}}</td>
-            </tr>
-        {{/userAccounts}}
-        </tbody>
-    </table>
-
-    <a href="/addUserAccount">Add user account</a>
+<h2>System Users</h2>
+<table class="ui striped table">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#userAccounts}}
+        <tr>
+            <td>{{userName}}</td>
+            <td>{{role}}</td>
+        </tr>
+    {{/userAccounts}}
+    </tbody>
+</table>
+<br>
+<a href="/addUserAccount">Add New User</a>
+<a href="/index.html">Back to Home Page</a>
 </body>
 </html>
