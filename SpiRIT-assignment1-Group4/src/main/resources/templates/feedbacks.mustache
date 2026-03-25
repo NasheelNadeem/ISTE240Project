@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Feedback Table</title>
+    <title>Feedbacks Table</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -10,28 +10,29 @@
     </style>
 </head>
 <body>
-    <h2>Feedback Table</h2>
-    <table class="ui striped table">
-        <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>Doctor Name</th>
-                <th>Rating</th>
-                <th>Comment</th>
-            </tr>
-        </thead>
-        <tbody>
-        {{#feedbacks}}
-            <tr>
-                <td>{{patient.name}}</td>
-                <td>{{doctor.name}}</td>
-                <td>{{rating}}</td>
-                <td>{{comment}}</td>
-            </tr>
-        {{/feedbacks}}
-        </tbody>
-    </table>
-
-    <a href="/addFeedback">Add feedback</a>
+<h2>Patient Feedback</h2>
+<table class="ui striped table">
+    <thead>
+    <tr>
+        <th>Patient</th>
+        <th>Doctor</th>
+        <th>Rating</th>
+        <th>Comment</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#feedbacks}}
+        <tr>
+            <td>{{patient.name}}</td>
+            <td>{{doctor.name}}</td>
+            <td>{{rating}} Stars</td>
+            <td>{{comment}}</td>
+        </tr>
+    {{/feedbacks}}
+    </tbody>
+</table>
+<br>
+<a href="/addFeedback">Add New Feedback</a>
+<a href="/index.html">Back to Home Page</a>
 </body>
 </html>

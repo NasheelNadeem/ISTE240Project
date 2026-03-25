@@ -1,5 +1,7 @@
 package org.example.spiritassignment1group4.models;
 
+import org.springframework.stereotype.Component;
+
 public class Patient {
     private String name;
     private int patientID;

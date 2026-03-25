@@ -5,21 +5,24 @@
     <title>Add Feedback</title>
 </head>
 <body>
-    <h2>Add Feedback</h2>
-    <form action="/addFeedback" method="post" class="ui form">
-        <label>Patient:</label><br>
-        <input type="text" name="patient" required><br><br>
+<h2>Submit Session Feedback</h2>
+<form action="/addFeedback" method="post">
+    <label>Patient Name:</label><br>
+    <input type="text" name="patient" required><br><br>
 
-        <label>Doctor:</label><br>
-        <input type="text" name="doctor" required><br><br>
+    <label>Doctor Name:</label><br>
+    <input type="text" name="doctor" required><br><br>
 
-        <label>Rating:</label><br>
-        <input type="number" name="rating" required><br><br>
+    <label>Rating (1-5):</label><br>
+    <input type="number" name="rating" min="1" max="5" required><br><br>
 
-        <label>Comment:</label><br>
-        <input type="text" name="comment" required><br><br>
+    <label>Comment:</label><br>
+    <textarea name="comment" required></textarea><br><br>
 
-        <button type="submit">Submit Feedback</button>
-    </form>
+    <button type="submit">Submit Feedback</button>
+</form>
+<br>
+<a href="/feedbacks">Feedbacks' List</a>
+<a href="/index">Back to Home Page</a>
 </body>
 </html>

@@ -5,18 +5,25 @@
     <title>Add User Account</title>
 </head>
 <body>
-    <h2>Add User Account</h2>
-    <form action="/addUserAccount" method="post" class="ui form">
-        <label>Username:</label><br>
-        <input type="text" name="userName" required><br><br>
+<h2>Create New Account</h2>
+<form action="/addUserAccount" method="post">
+    <label>Username:</label><br>
+    <input type="text" name="userName" required><br><br>
 
-        <label>Password:</label><br>
-        <input type="text" name="password" required><br><br>
+    <label>Password:</label><br>
+    <input type="password" name="password" required><br><br>
 
-        <label>Role:</label><br>
-        <input type="text" name="role" required><br><br>
+    <label>Role:</label><br>
+    <select name="role">
+        <option value="Patient">Patient</option>
+        <option value="Doctor">Doctor</option>
+        <option value="Admin">Admin</option>
+    </select><br><br>
 
-        <button type="submit">Submit User Account</button>
-    </form>
+    <button type="submit">Create Account</button>
+</form>
+<br>
+<a href="/userAccounts">Users' List</a>
+<a href="/index">Back to Home Page</a>
 </body>
 </html>
