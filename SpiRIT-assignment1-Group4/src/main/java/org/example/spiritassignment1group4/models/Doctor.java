@@ -1,42 +1,43 @@
+// Nasheel Nadeem - 764000112
 package org.example.spiritassignment1group4.models;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "doctors")
 public class Doctor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private String name;
-    private int doctorID;
     private String profession;
+
+    public Doctor() {}
+
+    public Doctor(String name, String profession) {
+        this.name = name;
+        this.profession = profession;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getDoctorID() {
-        return doctorID;
-    }
-
-    public void setDoctorID(int doctorID) {
-        this.doctorID = doctorID;
     }
 
     public String getProfession() {
         return profession;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Doctor{" +
-                "name='" + name + '\'' +
-                ", doctorID='" + doctorID + '\'' +
-                ", profession='" + profession + '\'' +
-                '}';
+    public void setProfession(String profession) {
+        this.profession = profession;
     }
 }

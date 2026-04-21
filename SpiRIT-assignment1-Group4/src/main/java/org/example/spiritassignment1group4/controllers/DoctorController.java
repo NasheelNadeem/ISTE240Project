@@ -1,44 +1,56 @@
+// Nasheel Nadeem - 764000112
 package org.example.spiritassignment1group4.controllers;
 
 import org.example.spiritassignment1group4.models.Doctor;
-import org.example.spiritassignment1group4.services.ProjectServices;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.example.spiritassignment1group4.services.DoctorService;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/doctors")
 public class DoctorController {
-    private final ProjectServices projectService;
 
-    public DoctorController(ProjectServices projectService) {
-        this.projectService = projectService;
+    private DoctorService doctorservice;
+
+    public DoctorController(DoctorService doctorservice) {
+        this.doctorservice = doctorservice;
     }
 
-    @GetMapping("/doctors")
-    public String viewDoctors(Model data) {
-        data.addAttribute("doctors", projectService.findAllDoctors());
-        return "doctors"; // Refers to doctors.mustache
+    // GET all
+    @GetMapping
+    public List<Doctor> getAllDoctors() {
+        return doctorservice.getAllDoctors();
     }
 
-
-    @GetMapping("/addDoctor")
-    public String addDoctorForm() {
-        return "redirect:/addDoctor.html";
+    // GET by ID
+    @GetMapping("/{id}")
+    public Doctor getDoctorById(@PathVariable Long id) {
+        return doctorservice.getDoctorById(id).orElse(null);
     }
 
-    @PostMapping("/addDoctor")
-    public String addDoctor(
-            @RequestParam("name") String name,
-            @RequestParam("id") int id,
-            @RequestParam("profession") String profession) {
+    // SEARCH
+    @GetMapping("/search")
+    public List<Doctor> searchDoctors(@RequestParam String name) {
+        return doctorservice.searchByName(name);
+    }
 
-        Doctor newDoctor = new Doctor();
-        newDoctor.setName(name);
-        newDoctor.setDoctorID(id);
-        newDoctor.setProfession(profession);
+    // CREATE
+    @PostMapping
+    public Doctor addDoctor(@RequestBody Doctor doctor) {
+        return doctorservice.addDoctor(doctor);
+    }
 
-        projectService.addDoctor(newDoctor);
+    // UPDATE
+    @PutMapping("/{id}")
+    public Doctor updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
+        return doctorservice.updateDoctor(id, doctor);
+    }
 
-        return "redirect:/add/success/doctor";
+    // DELETE
+    @DeleteMapping("/{id}")
+    public void deleteDoctor(@PathVariable Long id) {
+        doctorservice.deleteDoctor(id);
     }
 }
+

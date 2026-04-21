@@ -4,15 +4,15 @@ import org.example.spiritassignment1group4.models.*;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-//
+
 @Service
 public class ProjectServices {
 
-    private List<Appointment> appointments = new ArrayList<>();
-    private List<UserAccount> userAccounts = new ArrayList<>();
-    private List<Feedback> feedbacks = new ArrayList<>();
-    private List<Patient> patients = new ArrayList<>();
-    private List<Doctor> doctors = new ArrayList<>();
+    private final List<Appointment> appointments = new ArrayList<>();
+    private final List<UserAccount> userAccounts = new ArrayList<>();
+    private final List<Feedback> feedbacks = new ArrayList<>();
+    private final List<Patient> patients = new ArrayList<>();
+    private final List<Doctor> doctors = new ArrayList<>();
 
     public ProjectServices() {
         var p1 = new Patient();
@@ -33,12 +33,12 @@ public class ProjectServices {
 
         Doctor d1 = new Doctor();
         d1.setName("Habil Gray");
-        d1.setDoctorID(55);
+        d1.setId(55L);
         d1.setProfession("Psychologist");
 
         Doctor d2 = new Doctor();
         d2.setName("Pasor Serical");
-        d2.setDoctorID(52);
+        d2.setId(52L);
         d2.setProfession("Therapist");
 
         doctors.add(d1);
