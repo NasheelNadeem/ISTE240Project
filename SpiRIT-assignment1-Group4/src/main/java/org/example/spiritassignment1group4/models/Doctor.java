@@ -40,4 +40,7 @@ public class Doctor {
     public void setProfession(String profession) {
         this.profession = profession;
     }
+
+    public void setId(long l) {
+    }
 }
