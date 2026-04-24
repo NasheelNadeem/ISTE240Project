@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Feedbacks</h1>
+
+<input id="search" placeholder="Search">
+<button onclick="search()">Search</button>
+
+<table border="1">
+<thead>
+<tr>
+<th>ID</th><th>Patient</th><th>Doctor</th><th>Rating</th><th>Comment</th><th>Actions</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+<h2>Add</h2>
+<input id="p" placeholder="Patient">
+<input id="d" placeholder="Doctor">
+<input id="r" type="number">
+<input id="c" placeholder="Comment">
+<button onclick="add()">Add</button>
+
+<script>
+async function load(){
+ let res = await fetch('/api/feedbacks');
+ let data = await res.json();
+ let t = document.getElementById("table");
+ t.innerHTML="";
+ data.forEach(f=>{
+  t.innerHTML+=`
+  <tr>
+   <td>${f.id}</td>
+   <td>${f.patient.name}</td>
+   <td>${f.doctor.name}</td>
+   <td>${f.rating}</td>
+   <td>${f.comment}</td>
+   <td>
+     <button onclick="edit(${f.id})">Edit</button>
+     <button onclick="del(${f.id})">Delete</button>
+   </td>
+  </tr>`;
+ });
+}
+
+async function add(){
+ await fetch('/api/feedbacks',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({
+   patient:{name:document.getElementById("p").value},
+   doctor:{name:document.getElementById("d").value},
+   rating:document.getElementById("r").value,
+   comment:document.getElementById("c").value
+  })
+ });
+ load();
+}
+
+async function del(id){
+ await fetch('/api/feedbacks/'+id,{method:'DELETE'});
+ load();
+}
+
+async function edit(id){
+ let c = prompt("New comment:");
+ await fetch('/api/feedbacks/'+id,{
+  method:'PUT',
+  headers:{'Content-Type':'application/json'},
+  body: JSON.stringify(c)
+ });
+ load();
+}
+
+async function search(){
+ let val = document.getElementById("search").value;
+
+ let res = await fetch('/api/feedbacks/search/doctor?name='+val);
+ let data = await res.json();
+
+ if(data.length===0){
+  res = await fetch('/api/feedbacks/search/patient?name='+val);
+  data = await res.json();
+ }
+
+ if(data.length===0){
+  res = await fetch('/api/feedbacks/search/rating?rating='+val);
+  data = await res.json();
+ }
+
+ let t = document.getElementById("table");
+ t.innerHTML="";
+ data.forEach(f=>{
+  t.innerHTML+=`
+  <tr>
+   <td>${f.id}</td>
+   <td>${f.patient.name}</td>
+   <td>${f.doctor.name}</td>
+   <td>${f.rating}</td>
+   <td>${f.comment}</td>
+  </tr>`;
+ });
+}
+
+load();
+</script>
+
+</body>
+</html>
