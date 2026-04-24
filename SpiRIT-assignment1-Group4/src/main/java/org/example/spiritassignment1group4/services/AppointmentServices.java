@@ -1,65 +1,51 @@
+//Mohammed Ahmad 754003903
+
 package org.example.spiritassignment1group4.services;
 
+import jakarta.transaction.Transactional;
 import org.example.spiritassignment1group4.models.Appointment;
-import org.example.spiritassignment1group4.models.Doctor;
-import org.example.spiritassignment1group4.models.Patient;
+import org.example.spiritassignment1group4.repositories.AppointmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
+@Transactional
 public class AppointmentServices {
-    List<Appointment> appointments = new ArrayList<>();
 
-    public AppointmentServices(){
-        var p1 = new Patient();
-        p1.setName("Mark House");
-        p1.setPatientId(11);
-        var d1 = new Doctor();
-        d1.setName("Habil Gray");
-        d1.setDoctorID(55);
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
-        var a1 = new Appointment();
-        a1.setPatient(p1);
-        a1.setDoctor(d1);
-        a1.setDepartment("Therapy");
-        a1.setDate("03/11/2026");
-        a1.setTime("11:30AM");
 
-        appointments.add(a1);
-
-        var p2 = new Patient();
-        p2.setName("John Jalp");
-        p2.setPatientId(12);
-        var d2 = new Doctor();
-        d2.setName("Pasor Serical");
-        d2.setDoctorID(52);
-
-        var a2 = new Appointment();
-        a2.setPatient(p2);
-        a2.setDoctor(d2);
-        a2.setDepartment("Psycho");
-        a2.setDate("05/11/2026");
-        a2.setTime("12:30PM");
-
-        appointments.add(a2);
+    public List<Appointment> getAllAppointments() {
+        return appointmentRepository.findAll();
     }
 
-
-    public List<Appointment> findAllAppointments () {
-        return this.appointments;
+    public Optional<Appointment> getAppointmentById(Long id) {
+        return appointmentRepository.findById(id);
     }
 
-    public void saveAppointment(Patient patient, Doctor doctor, String department, String date, String time){
-        var newAppointment = new Appointment();
-        newAppointment.setPatient(patient);
-        newAppointment.setDoctor(doctor);
-        newAppointment.setDepartment(department);
-        newAppointment.setDate(date);
-        newAppointment.setTime(time);
-        this.appointments.add(newAppointment);
+    public List<Appointment> searchByDepartment(String department) {
+        return appointmentRepository.findByDepartment(department);
+    }
+
+    public List<Appointment> findAppointmentsByDepartmentAndDate(String department, String date) {
+        return appointmentRepository.findByDepartmentAndDate(department, date);
+    }
+
+    public Appointment saveAppointment(Appointment appointment) {
+        return appointmentRepository.save(appointment);
+    }
+
+    public void deleteAppointment(Long id) {
+        appointmentRepository.deleteById(id);
+    }
+
+    public void updateAppointmentDepartmentById(Long id, String department) {
+        appointmentRepository.updateDepartmentById(id, department);
     }
 
 }
