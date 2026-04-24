@@ -4,7 +4,7 @@
 
 <h1>Feedbacks</h1>
 
-<input id="search" placeholder="Search">
+<input id="search" placeholder="Search doctor/patient/rating">
 <button onclick="search()">Search</button>
 
 <table border="1">
@@ -16,10 +16,10 @@
 <tbody id="table"></tbody>
 </table>
 
-<h2>Add</h2>
+<h2>Add Feedback</h2>
 <input id="p" placeholder="Patient">
 <input id="d" placeholder="Doctor">
-<input id="r" type="number">
+<input id="r" type="number" placeholder="Rating">
 <input id="c" placeholder="Comment">
 <button onclick="add()">Add</button>
 
@@ -65,11 +65,11 @@ async function del(id){
 }
 
 async function edit(id){
- let c = prompt("New comment:");
+ let newComment = prompt("Enter new comment:");
  await fetch('/api/feedbacks/'+id,{
   method:'PUT',
   headers:{'Content-Type':'application/json'},
-  body: JSON.stringify(c)
+  body: JSON.stringify(newComment)
  });
  load();
 }
@@ -80,12 +80,12 @@ async function search(){
  let res = await fetch('/api/feedbacks/search/doctor?name='+val);
  let data = await res.json();
 
- if(data.length===0){
+ if(data.length === 0){
   res = await fetch('/api/feedbacks/search/patient?name='+val);
   data = await res.json();
  }
 
- if(data.length===0){
+ if(data.length === 0){
   res = await fetch('/api/feedbacks/search/rating?rating='+val);
   data = await res.json();
  }
