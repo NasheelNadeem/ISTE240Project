@@ -7,13 +7,13 @@ public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long doctorID;
+    private Long id;
 
     private String name;
     private String profession;
 
     public Long getDoctorID() {
-        return doctorID;
+        return id;
     }
 
     public String getName() {
