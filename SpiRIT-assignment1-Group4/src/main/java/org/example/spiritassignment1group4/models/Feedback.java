@@ -1,29 +1,25 @@
 package org.example.spiritassignment1group4.models;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-@Component
+@Entity
 public class Feedback {
 
-    private Patient patient;
-    private Doctor doctor;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private int rating;
     private String comment;
 
-    public Patient getPatient() {
-        return patient;
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Patient patient;
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Doctor doctor;
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
+    public Long getId() {
+        return id;
     }
 
     public int getRating() {
@@ -42,13 +38,19 @@ public class Feedback {
         this.comment = comment;
     }
 
-    @Override
-    public String toString() {
-        return "Feedback{" +
-                "patient=" + patient +
-                ", doctor=" + doctor +
-                ", rating=" + rating +
-                ", comment='" + comment + '\'' +
-                '}';
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 }
