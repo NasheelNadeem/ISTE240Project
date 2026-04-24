@@ -1,11 +1,19 @@
 package org.example.spiritassignment1group4.models;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-@Component
+@Entity
 public class Patient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long patientID;
+
     private String name;
-    private int patientID;
+
+    public Long getPatientID() {
+        return patientID;
+    }
 
     public String getName() {
         return name;
@@ -13,21 +21,5 @@ public class Patient {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getPatientID() {
-        return patientID;
-    }
-
-    public void setPatientId(int patientID) {
-        this.patientID = patientID;
-    }
-
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "name='" + name + '\'' +
-                ", PatientId='" + patientID + '\'' +
-                '}';
     }
 }
