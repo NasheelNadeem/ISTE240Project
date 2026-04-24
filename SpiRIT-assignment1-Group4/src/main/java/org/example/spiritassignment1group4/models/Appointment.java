@@ -1,35 +1,50 @@
+//Mohammed Ahmad 754003903
+
 package org.example.spiritassignment1group4.models;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-import javax.xml.crypto.Data;
-import java.sql.Date;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.time.LocalDate;
-
+@Entity
+@Table(name = "appointment")
 public class Appointment {
-    private Patient patient;
-    private Doctor doctor;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "department", length = 50, nullable = false)
     private String department;
+    @Column(name = "date", length = 50, nullable = false)
     private String date;
+    @Column(name = "time", length = 50, nullable = false)
     private String time;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Patient patient;
 
-    public Patient getPatient() {
-        return patient;
-    }
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Doctor doctor;
 
-    public void setPatient(Patient patient) {
+
+    public Appointment(String date, Long id, String department, String time, Patient patient, Doctor doctor) {
+        this.date = date;
+        this.id = id;
+        this.department = department;
+        this.time = time;
         this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public Appointment() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDepartment() {
@@ -56,14 +71,19 @@ public class Appointment {
         this.time = time;
     }
 
-    @Override
-    public String toString() {
-        return "Appointment{" +
-                "patient=" + patient +
-                ", doctor=" + doctor +
-                ", department='" + department + '\'' +
-                ", date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                '}';
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 }
