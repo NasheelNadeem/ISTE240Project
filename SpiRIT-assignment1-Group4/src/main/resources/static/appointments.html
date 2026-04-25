@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment List</title>
+
+    <!-- jQuery + Semantic UI -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f4f7f9;
+            padding: 30px;
+        }
+
+        .main.container {
+            margin-top: 25px;
+        }
+
+        .page-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        #message {
+            display: none;
+        }
+
+        .table-actions {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="ui main container">
+
+    <div class="ui blue inverted menu">
+        <a class="header item" href="index.html">
+            SpiRIT Psychology
+        </a>
+        <a class="item active" href="appointments.html">Appointments</a>
+        <a class="item" href="index.html">Home</a>
+    </div>
+
+    <div class="page-card">
+        <h1 class="ui header">
+            <i class="calendar alternate outline icon"></i>
+            <div class="content">
+                Appointment List
+                <div class="sub header">View, add, edit, delete, and search appointments</div>
+            </div>
+        </h1>
+
+        <div id="message" class="ui message"></div>
+
+        <div class="ui stackable grid">
+            <div class="ten wide column">
+                <div class="ui action input fluid">
+                    <input type="text" id="searchDepartment" placeholder="Search by department">
+                    <button class="ui blue button" id="searchBtn">
+                        <i class="search icon"></i>
+                        Search
+                    </button>
+                    <button class="ui button" id="showAllBtn">Show All</button>
+                </div>
+            </div>
+
+            <div class="six wide right aligned column">
+                <button class="ui primary button" id="loadBtn">
+                    <i class="sync icon"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <div class="page-card" id="formCard">
+        <h3 class="ui dividing header" id="formTitle">Add Appointment</h3>
+
+        <form class="ui form" id="appointmentForm">
+            <input type="hidden" id="appointmentId">
+
+            <div class="three fields">
+                <div class="field">
+                    <label>Department</label>
+                    <input type="text" id="department" placeholder="Therapy" required>
+                </div>
+
+                <div class="field">
+                    <label>Date</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="field">
+                    <label>Time</label>
+                    <input type="time" id="time" required>
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Patient Name</label>
+                    <input type="text" id="patientName" placeholder="Patient name" required>
+                </div>
+
+                <div class="field">
+                    <label>Doctor Name</label>
+                    <input type="text" id="doctorName" placeholder="Doctor name" required>
+                </div>
+            </div>
+
+            <button type="submit" class="ui green button">
+                <i class="save icon"></i>
+                Save
+            </button>
+
+            <button type="button" class="ui button" id="clearBtn">
+                Clear
+            </button>
+        </form>
+    </div>
+
+    <!-- Appointment Table -->
+    <div class="page-card">
+        <h3 class="ui dividing header">Appointments</h3>
+
+        <table class="ui celled striped compact table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th class="right aligned">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody id="appointmentTableBody">
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    // Base API endpoint for Appointment REST controller
+    const API_URL = "/api/appointments";
+
+        loadAppointments();
+
+        $("#loadBtn").click(function () {
+            loadAppointments();
+        });
+
+        $("#showAllBtn").click(function () {
+            $("#searchDepartment").val("");
+            loadAppointments();
+        });
+
+        $("#searchBtn").click(function () {
+            searchAppointments();
+        });
+
+        $("#clearBtn").click(function () {
+            clearForm();
+        });
+
+        $("#appointmentForm").submit(function (event) {
+            event.preventDefault();
+            saveAppointment();
+        });
+
+    // Fetch all appointments from backend API
+    function loadAppointments() {
+
+
+        $.get(API_URL, function (appointments) {
+            displayAppointments(appointments);
+        }).fail(function () {
+            showMessage("Could not load appointments", "negative");
+        });
+    }
+
+    // Search appointments by department using query parameter
+    function searchAppointments() {
+        let department = $("#searchDepartment").val().trim();
+
+        if (department === "") {
+            loadAppointments();
+            return;
+        }
+
+        $.get(`${API_URL}/search?department=${department}`, function (appointments) {
+            displayAppointments(appointments);
+        }).fail(function () {
+            showMessage("Search failed. Check the /api/appointments/search endpoint.", "negative");
+        });
+    }
+
+    // Create new appointment (POST) or update existing one (PUT)
+    function saveAppointment() {
+        let id = $("#appointmentId").val();
+
+        let appointment = {
+            department: $("#department").val(),
+            date: $("#date").val(),
+            time: $("#time").val(),
+            patient: {
+                name: $("#patientName").val()
+            },
+            doctor: {
+                name: $("#doctorName").val()
+            }
+        };
+
+        let methodType;
+        let url;
+        // If id exists then update appointment, otherwise create new one
+        if (id) {
+            methodType = "PUT";
+            url = API_URL + "/" + id;
+        } else {
+            methodType = "POST";
+            url = API_URL;
+        }
+
+        // Send request to backend API with JSON data
+        $.ajax({
+            url: url,
+            type: methodType,
+            contentType: "application/json",
+            data: JSON.stringify(appointment),
+            success: function () {
+                if (id){
+                    showMessage("Appointment updated successfully.", "positive");
+                }
+                else {
+                    showMessage("Appointment added successfully.", "positive");
+                }
+                clearForm();
+                loadAppointments();
+            },
+            error: function () {
+                showMessage("Could not save appointment. Check the JSON body and required fields.", "negative");
+            }
+        });
+    }
+
+    // Display appointments in table
+    function displayAppointments(appointments) {
+        let rows = "";
+        // Show message if no appointments found
+        if (!appointments || appointments.length === 0) {
+            $("#appointmentTableBody").html(`
+                <tr>
+                    <td colspan="7" class="center aligned">No appointments found.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        appointments.forEach(function (appointment) {
+            let patientName;
+            // Check if patient exists before accessing name
+            if (appointment.patient && appointment.patient.name) {
+                patientName = appointment.patient.name;
+            } else {
+                patientName = "N/A";
+            }
+
+            let doctorName;
+            // Check if doctor exists before accessing name
+            if (appointment.doctor && appointment.doctor.name) {
+                doctorName = appointment.doctor.name;
+            } else {
+                doctorName = "N/A";
+            }
+
+            rows += `
+                <tr>
+                    <td>${appointment.id}</td>
+                    <td>${patientName}</td>
+                    <td>${doctorName}</td>
+                    <td>${appointment.department || ""}</td>
+                    <td>${appointment.date || ""}</td>
+                    <td>${appointment.time || ""}</td>
+                    <td class="right aligned table-actions">
+                        <button class="ui tiny yellow button" onclick='editAppointment(${JSON.stringify(appointment)})'>
+                            <i class="edit icon"></i>
+                            Edit
+                        </button>
+                        <button class="ui tiny red button" onclick="deleteAppointment(${appointment.id})">
+                            <i class="trash icon"></i>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        $("#appointmentTableBody").html(rows);
+    }
+
+    // Fill form with selected appointment data for editing
+    function editAppointment(appointment) {
+        $("#formTitle").text("Edit Appointment");
+        $("#appointmentId").val(appointment.id);
+        $("#department").val(appointment.department || "");
+        $("#date").val(appointment.date || "");
+        $("#time").val(appointment.time || "");
+
+        let patientName = "";
+        if (appointment.patient && appointment.patient.name) {
+            patientName = appointment.patient.name;
+        }
+
+        let doctorName = "";
+        if (appointment.doctor && appointment.doctor.name) {
+            doctorName = appointment.doctor.name;
+        }
+
+        $("#patientName").val(patientName);
+        $("#doctorName").val(doctorName);
+    }
+
+    // Delete appointment by ID
+    function deleteAppointment(id) {
+        if (!confirm("Are you sure you want to delete this appointment?")) {
+            return;
+        }
+
+        // Send request to backend API with JSON data
+        $.ajax({
+            url: `${API_URL}/${id}`,
+            type: "DELETE",
+            success: function () {
+                showMessage("Appointment deleted successfully.", "positive");
+                loadAppointments();
+            },
+            error: function () {
+                showMessage("Could not delete appointment.", "negative");
+            }
+        });
+    }
+
+    // Reset form and switch back to add mode
+    function clearForm() {
+        $("#formTitle").text("Add Appointment");
+        $("#appointmentId").val("");
+        $("#appointmentForm")[0].reset();
+    }
+
+    function showMessage(text, type) {
+        $("#message")
+            .removeClass("positive negative warning")
+            .addClass(type)
+            .html(text)
+            .fadeIn();
+
+        setTimeout(function () {
+            $("#message").fadeOut();
+        }, 3500);
+    }
+</script>
+
+</body>
+</html>
