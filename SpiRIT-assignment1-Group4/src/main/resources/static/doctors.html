@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor List</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+
+    <style>
+        body { background-color: #f4f7f9; padding: 30px; }
+        .page-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="ui container">
+
+    <div class="page-card">
+        <h2 class="ui header">Doctor Management</h2>
+
+        <input type="text" id="searchName" placeholder="Search doctor name">
+        <button onclick="searchDoctor()">Search</button>
+        <button onclick="loadDoctors()">Show All</button>
+    </div>
+
+    <div class="page-card">
+        <h3>Add / Edit Doctor</h3>
+
+        <input type="hidden" id="doctorId">
+
+        <input id="name" placeholder="Doctor Name">
+        <input id="profession" placeholder="Profession">
+
+        <button onclick="saveDoctor()">Save</button>
+        <button onclick="clearForm()">Clear</button>
+    </div>
+
+    <div class="page-card">
+        <table class="ui table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Profession</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="doctorTable"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+    let API = "/api/doctors";
+
+    function loadDoctors() {
+        $.get(API, function(data){
+            displayDoctors(data);
+        });
+    }
+
+    function displayDoctors(data){
+        let rows = "";
+
+        data.forEach(d => {
+            rows += `
+        <tr>
+            <td>${d.id}</td>
+            <td>${d.name}</td>
+            <td>${d.profession}</td>
+            <td>
+                <button onclick='editDoctor(${JSON.stringify(d)})'>Edit</button>
+                <button onclick='deleteDoctor(${d.id})'>Delete</button>
+            </td>
+        </tr>`;
+        });
+
+        $("#doctorTable").html(rows);
+    }
+
+    function saveDoctor(){
+        let id = $("#doctorId").val();
+
+        let doctor = {
+            name: $("#name").val(),
+            profession: $("#profession").val()
+        };
+
+        let method = id ? "PUT" : "POST";
+        let url = id ? API + "/" + id : API;
+
+        $.ajax({
+            url: url,
+            type: method,
+            contentType: "application/json",
+            data: JSON.stringify(doctor),
+            success: function(){
+                clearForm();
+                loadDoctors();
+            }
+        });
+    }
+
+    function editDoctor(d){
+        $("#doctorId").val(d.id);
+        $("#name").val(d.name);
+        $("#profession").val(d.profession);
+    }
+
+    function deleteDoctor(id){
+        $.ajax({
+            url: API + "/" + id,
+            type: "DELETE",
+            success: loadDoctors
+        });
+    }
+
+    function searchDoctor(){
+        let name = $("#searchName").val();
+
+        if(name === ""){
+            loadDoctors();
+            return;
+        }
+
+        $.get(API + "/search?name=" + name, function(data){
+            displayDoctors(data);
+        });
+    }
+
+    function clearForm(){
+        $("#doctorId").val("");
+        $("#name").val("");
+        $("#profession").val("");
+    }
+
+    loadDoctors();
+
+</script>
+
+</body>
+</html>
