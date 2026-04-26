@@ -1,16 +1,35 @@
+/*
+ * Student Name: Ryan Benson
+ * UID: 421007591
+ */
 package org.example.spiritassignment1group4.models;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "patients")
 public class Patient {
-    private String name;
-    private int patientID;
 
-    public Patient(String name, int patientID) {
-        this.name = name;
-        this.patientID = patientID;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name", length = 50, nullable = false)
+    private String name;
+
     public Patient() {}
+
+    public Patient(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -18,21 +37,5 @@ public class Patient {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getPatientID() {
-        return patientID;
-    }
-
-    public void setPatientId(int patientID) {
-        this.patientID = patientID;
-    }
-
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "name='" + name + '\'' +
-                ", PatientId='" + patientID + '\'' +
-                '}';
     }
 }

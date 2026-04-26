@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Project.iml" filepath="$PROJECT_DIR$/.idea/Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ISTE240Project.iml" filepath="$PROJECT_DIR$/.idea/ISTE240Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpiRIT-assignment1-Group4/SpiRIT-assignment1-Group4.iml" filepath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/SpiRIT-assignment1-Group4.iml" />
     </modules>
   </component>
 </project>
