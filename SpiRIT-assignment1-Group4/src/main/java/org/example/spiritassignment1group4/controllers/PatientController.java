@@ -5,7 +5,7 @@
 package org.example.spiritassignment1group4.controllers;
 
 import org.example.spiritassignment1group4.models.Patient;
-import org.example.spiritassignment1group4.services.PatientService;
+import org.example.spiritassignment1group4.services.PatientServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class PatientController {
 
     @Autowired
-    private PatientService patientService;
+    private PatientServices patientService;
 
     @GetMapping
     public List<Patient> getAllPatients() {
