@@ -127,7 +127,6 @@
 <script>
   const API_URL = "/api/patients";
 
-  $(document).ready(function() {
     loadPatients();
 
     $("#loadBtn").click(function () {
@@ -151,7 +150,6 @@
       event.preventDefault();
       savePatient();
     });
-  });
 
   function loadPatients() {
     $.get(API_URL, function (patients) {

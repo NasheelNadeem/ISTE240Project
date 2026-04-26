@@ -3,6 +3,7 @@ package org.example.spiritassignment1group4.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "feedbacks")
 public class Feedback {
 
     @Id

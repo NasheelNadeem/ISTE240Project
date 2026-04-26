@@ -20,7 +20,7 @@ public class FeedbackController {
 
     @GetMapping
     public List<Feedback> viewFeedback() {
-        return feedServ.findAllFeedbacks();
+        return feedServ.getAllFeedbacks();
     }
 
     @PostMapping
@@ -46,23 +46,23 @@ public class FeedbackController {
 
     @DeleteMapping("/{id}")
     public void deleteFeedback(@PathVariable Long id) {
-        feedServ.deleteById(id);
+        feedServ.deleteFeedback(id);
     }
 
     @PutMapping("/{id}")
     public void updateComment(@PathVariable Long id,
                               @RequestParam String comment) {
-        feedServ.updateComment(id, comment);
+        feedServ.updateCommentById(id, comment);
     }
 
     @GetMapping("/doctor")
     public List<Feedback> byDoctor(@RequestParam String name) {
-        return feedServ.findByDoctor(name);
+        return feedServ.findByDoctorName(name);
     }
 
     @GetMapping("/patient")
     public List<Feedback> byPatient(@RequestParam String name) {
-        return feedServ.findByPatient(name);
+        return feedServ.findByPatientName(name);
     }
 
     @GetMapping("/rating")
