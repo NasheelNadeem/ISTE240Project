@@ -19,7 +19,6 @@ public class AppointmentServices {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
     }

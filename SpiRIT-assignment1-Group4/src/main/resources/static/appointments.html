@@ -1,3 +1,4 @@
+<!--Mohammed Ahmad 754003903-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,11 +43,12 @@
 <div class="ui main container">
 
     <div class="ui blue inverted menu">
-        <a class="header item" href="index.html">
-            SpiRIT Psychology
-        </a>
-        <a class="item active" href="appointments.html">Appointments</a>
+        <a class="header item" href="index.html">SpiRIT Psychology</a>
         <a class="item" href="index.html">Home</a>
+        <a class="item" href="patients.html">Patients</a>
+        <a class="item" href="doctor.html">Doctors</a>
+        <a class="item active" href="appointments.html">Appointments</a>
+        <a class="item" href="feedbacks.html">Feedback</a>
     </div>
 
     <div class="page-card">
@@ -145,9 +147,7 @@
             </tr>
             </thead>
 
-            <tbody id="appointmentTableBody">
-
-            </tbody>
+            <tbody id="appointmentTableBody"></tbody>
         </table>
     </div>
 
@@ -183,8 +183,6 @@
 
     // Fetch all appointments from backend API
     function loadAppointments() {
-
-
         $.get(API_URL, function (appointments) {
             displayAppointments(appointments);
         }).fail(function () {
@@ -201,7 +199,7 @@
             return;
         }
 
-        $.get(`${API_URL}/search?department=${department}`, function (appointments) {
+        $.get(`${API_URL}/search?department=${encodeURIComponent(department)}`, function (appointments) {
             displayAppointments(appointments);
         }).fail(function () {
             showMessage("Search failed. Check the /api/appointments/search endpoint.", "negative");
@@ -226,6 +224,7 @@
 
         let methodType;
         let url;
+
         // If id exists then update appointment, otherwise create new one
         if (id) {
             methodType = "PUT";
@@ -242,10 +241,9 @@
             contentType: "application/json",
             data: JSON.stringify(appointment),
             success: function () {
-                if (id){
+                if (id) {
                     showMessage("Appointment updated successfully.", "positive");
-                }
-                else {
+                } else {
                     showMessage("Appointment added successfully.", "positive");
                 }
                 clearForm();
@@ -260,6 +258,7 @@
     // Display appointments in table
     function displayAppointments(appointments) {
         let rows = "";
+
         // Show message if no appointments found
         if (!appointments || appointments.length === 0) {
             $("#appointmentTableBody").html(`
@@ -272,6 +271,7 @@
 
         appointments.forEach(function (appointment) {
             let patientName;
+
             // Check if patient exists before accessing name
             if (appointment.patient && appointment.patient.name) {
                 patientName = appointment.patient.name;
@@ -280,6 +280,7 @@
             }
 
             let doctorName;
+
             // Check if doctor exists before accessing name
             if (appointment.doctor && appointment.doctor.name) {
                 doctorName = appointment.doctor.name;
@@ -340,7 +341,6 @@
             return;
         }
 
-        // Send request to backend API with JSON data
         $.ajax({
             url: `${API_URL}/${id}`,
             type: "DELETE",
