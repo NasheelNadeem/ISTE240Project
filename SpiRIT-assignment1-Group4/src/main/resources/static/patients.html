@@ -3,165 +3,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Patient List</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
-<style>
-body { background-color: #f4f7f9; padding: 30px; }
-.main.container { margin-top: 25px; }
-.page-card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.08);
-    margin-bottom: 25px;
-}
-#message { display: none; }
-.table-actions { white-space: nowrap; }
-</style>
+  <meta charset="UTF-8">
+  <title>Patient List</title>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+
+  <style>
+    body {
+      background-color: #f4f7f9;
+      padding: 30px;
+    }
+
+    .main.container {
+      margin-top: 25px;
+    }
+
+    .page-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    #message {
+      display: none;
+    }
+
+    .table-actions {
+      white-space: nowrap;
+    }
+  </style>
 </head>
+
 <body>
+
 <div class="ui main container">
 
-<div class="ui blue inverted menu">
-    <a class="header item" href="index.html">SpiRIT Psychology</a>
-    <a class="item " href="index.html">Home</a>
+  <div class="ui blue inverted menu">
+    <a class="header item" href="index.html">
+      SpiRIT Psychology
+    </a>
     <a class="item active" href="patients.html">Patients</a>
-    <a class="item " href="doctors.html">Doctors</a>
-    <a class="item " href="appointments.html">Appointments</a>
-    <a class="item " href="feedbacks.html">Feedback</a>
-</div>
-    <div class="page-card">
-        <h1 class="ui header">
-            <i class="user outline icon"></i>
-            <div class="content">Patient List<div class="sub header">View, add, edit, delete, and search patients</div></div>
-        </h1>
-        <div id="message" class="ui message"></div>
-        <div class="ui stackable grid">
-            <div class="ten wide column">
-                <div class="ui action input fluid">
-                    <input type="text" id="searchName" placeholder="Search by name">
-                    <button class="ui blue button" id="searchBtn"><i class="search icon"></i>Search</button>
-                    <button class="ui button" id="showAllBtn">Show All</button>
-                </div>
-            </div>
-            <div class="six wide right aligned column">
-                <button class="ui primary button" id="loadBtn"><i class="sync icon"></i>Refresh</button>
-            </div>
+    <a class="item" href="index.html">Home</a>
+  </div>
+
+  <div class="page-card">
+    <h1 class="ui header">
+      <i class="user outline icon"></i>
+      <div class="content">
+        Patient List
+        <div class="sub header">View, add, edit, delete, and search patients</div>
+      </div>
+    </h1>
+
+    <div id="message" class="ui message"></div>
+
+    <div class="ui stackable grid">
+      <div class="ten wide column">
+        <div class="ui action input fluid">
+          <input type="text" id="searchName" placeholder="Search by name">
+          <button class="ui blue button" id="searchBtn">
+            <i class="search icon"></i>
+            Search
+          </button>
+          <button class="ui button" id="showAllBtn">Show All</button>
         </div>
-    </div>
+      </div>
 
-    <div class="page-card" id="formCard">
-        <h3 class="ui dividing header" id="formTitle">Add Patient</h3>
-        <form class="ui form" id="patientForm">
-            <input type="hidden" id="patientId">
-            <div class="field">
-                <label>Name</label>
-                <input type="text" id="name" placeholder="Patient name" required>
-            </div>
-            <button type="submit" class="ui green button"><i class="save icon"></i>Save</button>
-            <button type="button" class="ui button" id="clearBtn">Clear</button>
-        </form>
+      <div class="six wide right aligned column">
+        <button class="ui primary button" id="loadBtn">
+          <i class="sync icon"></i>
+          Refresh
+        </button>
+      </div>
     </div>
+  </div>
 
-    <div class="page-card">
-        <h3 class="ui dividing header">Patients</h3>
-        <table class="ui celled striped compact table">
-            <thead><tr><th>ID</th><th>Patient Name</th><th class="right aligned">Actions</th></tr></thead>
-            <tbody id="patientTableBody"></tbody>
-        </table>
-    </div>
+  <div class="page-card" id="formCard">
+    <h3 class="ui dividing header" id="formTitle">Add Patient</h3>
+
+    <form class="ui form" id="patientForm">
+      <input type="hidden" id="patientId">
+
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="name" placeholder="Patient Name" required>
+      </div>
+
+      <button type="submit" class="ui green button">
+        <i class="save icon"></i>
+        Save
+      </button>
+
+      <button type="button" class="ui button" id="clearBtn">
+        Clear
+      </button>
+    </form>
+  </div>
+
+  <div class="page-card">
+    <h3 class="ui dividing header">Patients</h3>
+
+    <table class="ui celled striped compact table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Patient Name</th>
+        <th class="right aligned">Actions</th>
+      </tr>
+      </thead>
+
+      <tbody id="patientTableBody">
+
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
 <script>
-const API_URL = "/api/patients";
+  const API_URL = "/api/patients";
 
     loadPatients();
-    $("#loadBtn").click(loadPatients);
-    $("#showAllBtn").click(function () { $("#searchName").val(""); loadPatients(); });
-    $("#searchBtn").click(searchPatients);
-    $("#clearBtn").click(clearForm);
-    $("#patientForm").submit(function (event) { event.preventDefault(); savePatient(); });
 
-function loadPatients() {
-    $.get(API_URL, displayPatients).fail(function () { showMessage("Could not load patients", "negative"); });
-}
+    $("#loadBtn").click(function () {
+      loadPatients();
+    });
 
-function searchPatients() {
+    $("#showAllBtn").click(function () {
+      $("#searchName").val("");
+      loadPatients();
+    });
+
+    $("#searchBtn").click(function () {
+      searchPatients();
+    });
+
+    $("#clearBtn").click(function () {
+      clearForm();
+    });
+
+    $("#patientForm").submit(function (event) {
+      event.preventDefault();
+      savePatient();
+    });
+
+  function loadPatients() {
+    $.get(API_URL, function (patients) {
+      displayPatients(patients);
+    }).fail(function () {
+      showMessage("Could not load patients", "negative");
+    });
+  }
+
+  function searchPatients() {
     let name = $("#searchName").val().trim();
-    if (name === "") { loadPatients(); return; }
-    $.get(`${API_URL}/search?name=${encodeURIComponent(name)}`, displayPatients)
-        .fail(function () { showMessage("Search failed.", "negative"); });
-}
+    if (name === "") {
+      loadPatients();
+      return;
+    }
+    $.get(`${API_URL}/search?name=${name}`, function (patients) {
+      displayPatients(patients);
+    }).fail(function () {
+      showMessage("Search failed.", "negative");
+    });
+  }
 
-function savePatient() {
+  function savePatient() {
     let id = $("#patientId").val();
-    let patient = { name: $("#name").val() };
+    let patient = {
+      name: $("#name").val()
+    };
+
     let methodType = id ? "PUT" : "POST";
     let url = id ? API_URL + "/" + id : API_URL;
 
     $.ajax({
-        url: url,
-        type: methodType,
-        contentType: "application/json",
-        data: JSON.stringify(patient),
-        success: function () {
-            showMessage(id ? "Patient updated successfully." : "Patient added successfully.", "positive");
-            clearForm();
-            loadPatients();
-        },
-        error: function () { showMessage("Could not save patient.", "negative"); }
+      url: url,
+      type: methodType,
+      contentType: "application/json",
+      data: JSON.stringify(patient),
+      success: function () {
+        showMessage(id ? "Patient updated successfully." : "Patient added successfully.", "positive");
+        clearForm();
+        loadPatients();
+      },
+      error: function () {
+        showMessage("Could not save patient.", "negative");
+      }
     });
-}
+  }
 
-function displayPatients(patients) {
+  function displayPatients(patients) {
     let rows = "";
     if (!patients || patients.length === 0) {
-        $("#patientTableBody").html(`<tr><td colspan="3" class="center aligned">No patients found.</td></tr>`);
-        return;
+      $("#patientTableBody").html(`<tr><td colspan="3" class="center aligned">No patients found.</td></tr>`);
+      return;
     }
+
     patients.forEach(function (patient) {
-        rows += `
-            <tr>
-                <td>${patient.id}</td>
-                <td>${patient.name || ""}</td>
-                <td class="right aligned table-actions">
-                    <button class="ui tiny yellow button" onclick='editPatient(${JSON.stringify(patient)})'><i class="edit icon"></i>Edit</button>
-                    <button class="ui tiny red button" onclick="deletePatient(${patient.id})"><i class="trash icon"></i>Delete</button>
-                </td>
-            </tr>`;
+      rows += `
+                <tr>
+                    <td>${patient.id}</td>
+                    <td>${patient.name}</td>
+                    <td class="right aligned table-actions">
+                        <button class="ui tiny yellow button" onclick='editPatient(${JSON.stringify(patient)})'>
+                            <i class="edit icon"></i> Edit
+                        </button>
+                        <button class="ui tiny red button" onclick="deletePatient(${patient.id})">
+                            <i class="trash icon"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
     });
     $("#patientTableBody").html(rows);
-}
+  }
 
-function editPatient(patient) {
+  function editPatient(patient) {
     $("#formTitle").text("Edit Patient");
     $("#patientId").val(patient.id);
-    $("#name").val(patient.name || "");
-}
+    $("#name").val(patient.name);
+  }
 
-function deletePatient(id) {
+  function deletePatient(id) {
     if (!confirm("Are you sure you want to delete this patient?")) return;
     $.ajax({
-        url: `${API_URL}/${id}`,
-        type: "DELETE",
-        success: function () { showMessage("Patient deleted successfully.", "positive"); loadPatients(); },
-        error: function () { showMessage("Could not delete patient.", "negative"); }
+      url: `${API_URL}/${id}`,
+      type: "DELETE",
+      success: function () {
+        showMessage("Patient deleted successfully.", "positive");
+        loadPatients();
+      },
+      error: function () {
+        showMessage("Could not delete patient.", "negative");
+      }
     });
-}
+  }
 
-function clearForm() {
+  function clearForm() {
     $("#formTitle").text("Add Patient");
     $("#patientId").val("");
     $("#patientForm")[0].reset();
-}
+  }
 
-function showMessage(text, type) {
+  function showMessage(text, type) {
     $("#message").removeClass("positive negative warning").addClass(type).html(text).fadeIn();
     setTimeout(function () { $("#message").fadeOut(); }, 3500);
-}
+  }
 </script>
+
 </body>
 </html>
