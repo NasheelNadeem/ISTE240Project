@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Doctor</title>
+</head>
+<body>
+<h2>Register New Doctor</h2>
+<form action="/addDoctor" method="post">
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Doctor ID:</label><br>
+    <input type="number" name="id" required><br><br>
+
+    <label>Profession:</label><br>
+    <input type="text" name="profession" required><br><br>
+
+    <button type="submit">Add Doctor</button>
+</form>
+<br>
+<a href="/doctors">Doctors' List</a>
+<a href="/index">Back to Home Page</a>
+</body>
+</html>

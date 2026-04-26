@@ -8,15 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+//Nasheel Nadeem 764000112
 @Service
 public class DoctorService {
 
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public DoctorService(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
-    }
 
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
@@ -30,7 +28,11 @@ public class DoctorService {
         return doctorRepository.findByName(name);
     }
 
-    public Doctor addDoctor(Doctor doctor) {
+    public List<Doctor> searchByProfession(String profession) {
+        return doctorRepository.findByProfession(profession);
+    }
+
+    public Doctor saveDoctor(Doctor doctor) {
         return doctorRepository.save(doctor);
     }
 
@@ -42,7 +44,15 @@ public class DoctorService {
         }).orElse(null);
     }
 
-    public void deleteDoctor(Long id) {
+    public boolean deleteDoctor(Long id) {
+        if (!doctorRepository.existsById(id)) {
+            return false;
+        }
         doctorRepository.deleteById(id);
+        return true;
+    }
+
+    public boolean updateProfession(Long id, String profession) {
+        return doctorRepository.updateProfessionById(id, profession) > 0;
     }
 }

@@ -1,72 +1,48 @@
 package org.example.spiritassignment1group4.controllers;
 
 import org.example.spiritassignment1group4.models.Doctor;
-import org.example.spiritassignment1group4.models.Feedback;
 import org.example.spiritassignment1group4.models.Patient;
 import org.example.spiritassignment1group4.services.FeedbackServices;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/feedbacks")
+@Controller
 public class FeedbackController {
-
     private FeedbackServices feedServ;
 
     public FeedbackController(FeedbackServices feedServ) {
         this.feedServ = feedServ;
     }
 
-    @GetMapping
-    public List<Feedback> viewFeedback() {
-        return feedServ.getAllFeedbacks();
+    @GetMapping("/feedbacks")
+    public String viewFeedback(Model data) {
+        data.addAttribute("feedbacks", feedServ.findAllFeedbacks());
+        return "feedbacks";
     }
 
-    @PostMapping
-    public Feedback addFeedback(@RequestParam String patient,
-                                @RequestParam String doctor,
-                                @RequestParam int rating,
-                                @RequestParam String comment) {
+    @GetMapping("/addFeedback")
+    public String addFeedbackForm(Model data) {
+        return "redirect:addFeedback.html";
+    }
 
+    @PostMapping("/addFeedback")
+    public String addFeedback(@RequestParam String patient, @RequestParam String doctor, @RequestParam int rating, @RequestParam String comment, Model data) {
         var newPatient = new Patient();
         newPatient.setName(patient);
 
         var newDoctor = new Doctor();
         newDoctor.setName(doctor);
 
-        var feedback = new Feedback();
-        feedback.setPatient(newPatient);
-        feedback.setDoctor(newDoctor);
-        feedback.setRating(rating);
-        feedback.setComment(comment);
-
-        return feedServ.saveFeedback(feedback);
+        feedServ.saveFeedback(newPatient, newDoctor, rating, comment);
+        return "redirect:feedbackSuccess";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteFeedback(@PathVariable Long id) {
-        feedServ.deleteFeedback(id);
-    }
-
-    @PutMapping("/{id}")
-    public void updateComment(@PathVariable Long id,
-                              @RequestParam String comment) {
-        feedServ.updateCommentById(id, comment);
-    }
-
-    @GetMapping("/doctor")
-    public List<Feedback> byDoctor(@RequestParam String name) {
-        return feedServ.findByDoctorName(name);
-    }
-
-    @GetMapping("/patient")
-    public List<Feedback> byPatient(@RequestParam String name) {
-        return feedServ.findByPatientName(name);
-    }
-
-    @GetMapping("/rating")
-    public List<Feedback> byRating(@RequestParam int rating) {
-        return feedServ.findByRating(rating);
+    @GetMapping("/feedbackSuccess")
+    public String showFeedbackSuccess(Model data) {
+        data.addAttribute("feedback", feedServ.findAllFeedbacks().get(feedServ.findAllFeedbacks().size()-1));
+        return "feedbackSuccess";
     }
 }

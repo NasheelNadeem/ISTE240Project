@@ -1,55 +1,81 @@
-// Nasheel Nadeem - 764000112
 package org.example.spiritassignment1group4.controllers;
 
 import org.example.spiritassignment1group4.models.Doctor;
 import org.example.spiritassignment1group4.services.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//Nasheel Nadeem 764000112
 @RestController
 @RequestMapping("/api/doctors")
 public class DoctorController {
 
     @Autowired
-    private DoctorService doctorservice;
+    private DoctorService doctorService;
 
-    // GET all
+
     @GetMapping
     public List<Doctor> getAllDoctors() {
-        return doctorservice.getAllDoctors();
+        return doctorService.getAllDoctors();
     }
 
-    // GET by ID
     @GetMapping("/{id}")
-    public Doctor getDoctorById(@PathVariable Long id) {
-        return doctorservice.getDoctorById(id).orElse(null);
+    public ResponseEntity<Doctor> getDoctorById(@PathVariable Long id) {
+        return doctorService.getDoctorById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // SEARCH
     @GetMapping("/search")
-    public List<Doctor> searchDoctors(@RequestParam String name) {
-        return doctorservice.searchByName(name);
+    public List<Doctor> searchDoctors(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String profession
+    ) {
+        if (name != null) {
+            return doctorService.searchByName(name);
+        }
+        if (profession != null) {
+            return doctorService.searchByProfession(profession);
+        }
+        return doctorService.getAllDoctors();
     }
 
-    // CREATE
     @PostMapping
-    public Doctor addDoctor(@RequestBody Doctor doctor) {
-        return doctorservice.addDoctor(doctor);
+    public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) {
+        return ResponseEntity.ok(doctorService.saveDoctor(doctor));
     }
 
-    // UPDATE
     @PutMapping("/{id}")
-    public Doctor updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
-        return doctorservice.updateDoctor(id, doctor);
+    public ResponseEntity<Doctor> updateDoctor(
+            @PathVariable Long id,
+            @RequestBody Doctor doctor
+    ) {
+        Doctor updated = doctorService.updateDoctor(id, doctor);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
-    public void deleteDoctor(@PathVariable Long id) {
-        doctorservice.deleteDoctor(id);
+    public ResponseEntity<String> deleteDoctor(@PathVariable Long id) {
+        if (!doctorService.deleteDoctor(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("Doctor deleted successfully");
     }
 
-
+    @PatchMapping("/{id}/profession")
+    public ResponseEntity<String> updateProfession(
+            @PathVariable Long id,
+            @RequestBody String profession
+    ) {
+        if (!doctorService.updateProfession(id, profession)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("Profession updated");
+    }
 }
