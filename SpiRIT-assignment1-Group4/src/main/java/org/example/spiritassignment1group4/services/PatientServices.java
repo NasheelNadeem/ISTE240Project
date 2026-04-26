@@ -2,8 +2,6 @@
  * Student Name: Ryan Benson
  * UID: 421007591
  */
-// Ryan Benson 421007591
-
 package org.example.spiritassignment1group4.services;
 
 import jakarta.transaction.Transactional;
@@ -17,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class PatientService {
+public class PatientServices {
 
     @Autowired
     private PatientRepository patientRepository;
