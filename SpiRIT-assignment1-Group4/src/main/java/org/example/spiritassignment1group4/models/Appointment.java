@@ -5,7 +5,7 @@ package org.example.spiritassignment1group4.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "appointment")
+@Table(name = "appointments")
 public class Appointment {
 
     @Id
@@ -35,9 +35,7 @@ public class Appointment {
         this.doctor = doctor;
     }
 
-    public Appointment() {
-
-    }
+    public Appointment() {}
 
     public Long getId() {
         return id;
