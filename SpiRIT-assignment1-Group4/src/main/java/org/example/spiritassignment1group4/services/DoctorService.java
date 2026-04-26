@@ -2,6 +2,7 @@ package org.example.spiritassignment1group4.services;
 
 import org.example.spiritassignment1group4.models.Doctor;
 import org.example.spiritassignment1group4.repositories.DoctorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Optional;
 @Service
 public class DoctorService {
 
+    @Autowired
     private final DoctorRepository doctorRepository;
 
     public DoctorService(DoctorRepository doctorRepository) {
