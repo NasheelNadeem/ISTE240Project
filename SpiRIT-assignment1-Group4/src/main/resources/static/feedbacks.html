@@ -1,0 +1,156 @@
+//Mohamed Ahmed 767000238
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Feedbacks</h1>
+
+<input id="search" placeholder="Search doctor/patient/rating">
+<button onclick="searchFeedbacks()">Search</button>
+<button onclick="loadFeedbacks()">Reset</button>
+
+<table border="1">
+<thead>
+<tr>
+<th>ID</th><th>Patient</th><th>Doctor</th><th>Rating</th><th>Comment</th><th>Actions</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+<h2>Add Feedback</h2>
+<input id="p" placeholder="Patient">
+<input id="d" placeholder="Doctor">
+<input id="r" type="number" placeholder="Rating">
+<input id="c" placeholder="Comment">
+<button onclick="addFeedback()">Add</button>
+
+<script>
+
+const API = '/api/feedbacks';
+
+async function loadFeedbacks(){
+    try {
+        const res = await fetch(API);
+        const data = await res.json();
+        renderTable(data);
+    } catch(err){
+        alert("Error loading feedbacks");
+    }
+}
+
+function renderTable(data){
+    const table = document.getElementById("table");
+    table.innerHTML = "";
+
+    data.forEach(f => {
+        const row = `
+        <tr>
+            <td>${f.id}</td>
+            <td>${f.patient?.name || ''}</td>
+            <td>${f.doctor?.name || ''}</td>
+            <td>${f.rating}</td>
+            <td>${f.comment}</td>
+            <td>
+                <button onclick="editFeedback(${f.id}, '${f.comment}')">Edit</button>
+                <button onclick="deleteFeedback(${f.id})">Delete</button>
+            </td>
+        </tr>`;
+        table.innerHTML += row;
+    });
+}
+
+async function addFeedback(){
+    const patient = document.getElementById("p").value;
+    const doctor = document.getElementById("d").value;
+    const rating = document.getElementById("r").value;
+    const comment = document.getElementById("c").value;
+
+    if(!patient || !doctor || !rating){
+        alert("Fill all required fields");
+        return;
+    }
+
+    const newFeedback = {
+        patient: { name: patient },
+        doctor: { name: doctor },
+        rating: parseInt(rating),
+        comment: comment
+    };
+
+    await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newFeedback)
+    });
+
+    clearInputs();
+    loadFeedbacks();
+}
+
+async function deleteFeedback(id){
+    if(!confirm("Delete this feedback?")) return;
+
+    await fetch(`${API}/${id}`, { method: 'DELETE' });
+    loadFeedbacks();
+}
+
+async function editFeedback(id, oldComment){
+    const newComment = prompt("Edit comment:", oldComment);
+    if(newComment === null) return;
+
+    const updated = {
+        comment: newComment
+    };
+
+    await fetch(`${API}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+    });
+
+    loadFeedbacks();
+}
+
+async function searchFeedbacks(){
+    const val = document.getElementById("search").value.trim();
+
+    if(!val){
+        loadFeedbacks();
+        return;
+    }
+
+    let endpoints = [
+        `${API}/search/doctor?name=${val}`,
+        `${API}/search/patient?name=${val}`,
+        `${API}/search/rating?rating=${val}`
+    ];
+
+    for(let url of endpoints){
+        let res = await fetch(url);
+        let data = await res.json();
+
+        if(data.length > 0){
+            renderTable(data);
+            return;
+        }
+    }
+
+    alert("No results found");
+    renderTable([]);
+}
+
+function clearInputs(){
+    document.getElementById("p").value = "";
+    document.getElementById("d").value = "";
+    document.getElementById("r").value = "";
+    document.getElementById("c").value = "";
+}
+
+loadFeedbacks();
+
+</script>
+
+</body>
+</html>

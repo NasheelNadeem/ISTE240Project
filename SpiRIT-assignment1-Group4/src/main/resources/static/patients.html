@@ -88,35 +88,6 @@ const API_URL = "/api/patients";
 function loadPatients() {
     $.get(API_URL, displayPatients).fail(function () { showMessage("Could not load patients", "negative"); });
 }
-    $("#loadBtn").click(function () {
-      loadPatients();
-    });
-
-    $("#showAllBtn").click(function () {
-      $("#searchName").val("");
-      loadPatients();
-    });
-
-    $("#searchBtn").click(function () {
-      searchPatients();
-    });
-
-    $("#clearBtn").click(function () {
-      clearForm();
-    });
-
-    $("#patientForm").submit(function (event) {
-      event.preventDefault();
-      savePatient();
-    });
-
-  function loadPatients() {
-    $.get(API_URL, function (patients) {
-      displayPatients(patients);
-    }).fail(function () {
-      showMessage("Could not load patients", "negative");
-    });
-  }
 
 function searchPatients() {
     let name = $("#searchName").val().trim();
