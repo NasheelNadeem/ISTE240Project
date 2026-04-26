@@ -1,0 +1,168 @@
+<!--Nasheel Nadeem 764000112-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Doctor List</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<style>
+body { background-color: #f4f7f9; padding: 30px; }
+.main.container { margin-top: 25px; }
+.page-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+#message { display: none; }
+.table-actions { white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="ui main container">
+
+<div class="ui blue inverted menu">
+    <a class="header item" href="index.html">SpiRIT Psychology</a>
+    <a class="item " href="index.html">Home</a>
+    <a class="item " href="patients.html">Patients</a>
+    <a class="item active" href="doctors.html">Doctors</a>
+    <a class="item " href="appointments.html">Appointments</a>
+    <a class="item " href="feedbacks.html">Feedback</a>
+</div>
+    <div class="page-card">
+        <h1 class="ui header">
+            <i class="user md icon"></i>
+            <div class="content">Doctor List<div class="sub header">View, add, edit, delete, and search doctors</div></div>
+        </h1>
+        <div id="message" class="ui message"></div>
+        <div class="ui stackable grid">
+            <div class="ten wide column">
+                <div class="ui action input fluid">
+                    <input type="text" id="searchName" placeholder="Search by doctor name">
+                    <button class="ui blue button" id="searchBtn"><i class="search icon"></i>Search</button>
+                    <button class="ui button" id="showAllBtn">Show All</button>
+                </div>
+            </div>
+            <div class="six wide right aligned column">
+                <button class="ui primary button" id="loadBtn"><i class="sync icon"></i>Refresh</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-card" id="formCard">
+        <h3 class="ui dividing header" id="formTitle">Add Doctor</h3>
+        <form class="ui form" id="doctorForm">
+            <input type="hidden" id="doctorId">
+            <div class="two fields">
+                <div class="field"><label>Name</label><input type="text" id="name" placeholder="Doctor name" required></div>
+                <div class="field"><label>Profession</label><input type="text" id="profession" placeholder="Profession" required></div>
+            </div>
+            <button type="submit" class="ui green button"><i class="save icon"></i>Save</button>
+            <button type="button" class="ui button" id="clearBtn">Clear</button>
+        </form>
+    </div>
+
+    <div class="page-card">
+        <h3 class="ui dividing header">Doctors</h3>
+        <table class="ui celled striped compact table">
+            <thead><tr><th>ID</th><th>Doctor Name</th><th>Profession</th><th class="right aligned">Actions</th></tr></thead>
+            <tbody id="doctorTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const API_URL = "/api/doctors";
+
+    loadDoctors();
+    $("#loadBtn").click(loadDoctors);
+    $("#showAllBtn").click(function () { $("#searchName").val(""); loadDoctors(); });
+    $("#searchBtn").click(searchDoctors);
+    $("#clearBtn").click(clearForm);
+    $("#doctorForm").submit(function (event) { event.preventDefault(); saveDoctor(); });
+
+function loadDoctors() {
+    $.get(API_URL, displayDoctors).fail(function () { showMessage("Could not load doctors", "negative"); });
+}
+
+function searchDoctors() {
+    let name = $("#searchName").val().trim();
+    if (name === "") { loadDoctors(); return; }
+    $.get(`${API_URL}/search?name=${encodeURIComponent(name)}`, displayDoctors)
+        .fail(function () { showMessage("Search failed.", "negative"); });
+}
+
+function saveDoctor() {
+    let id = $("#doctorId").val();
+    let doctor = { name: $("#name").val(), profession: $("#profession").val() };
+    let methodType = id ? "PUT" : "POST";
+    let url = id ? API_URL + "/" + id : API_URL;
+
+    $.ajax({
+        url: url,
+        type: methodType,
+        contentType: "application/json",
+        data: JSON.stringify(doctor),
+        success: function () {
+            showMessage(id ? "Doctor updated successfully." : "Doctor added successfully.", "positive");
+            clearForm();
+            loadDoctors();
+        },
+        error: function () { showMessage("Could not save doctor.", "negative"); }
+    });
+}
+
+function displayDoctors(doctors) {
+    let rows = "";
+    if (!doctors || doctors.length === 0) {
+        $("#doctorTableBody").html(`<tr><td colspan="4" class="center aligned">No doctors found.</td></tr>`);
+        return;
+    }
+    doctors.forEach(function (doctor) {
+        rows += `
+            <tr>
+                <td>${doctor.id}</td>
+                <td>${doctor.name || ""}</td>
+                <td>${doctor.profession || ""}</td>
+                <td class="right aligned table-actions">
+                    <button class="ui tiny yellow button" onclick='editDoctor(${JSON.stringify(doctor)})'><i class="edit icon"></i>Edit</button>
+                    <button class="ui tiny red button" onclick="deleteDoctor(${doctor.id})"><i class="trash icon"></i>Delete</button>
+                </td>
+            </tr>`;
+    });
+    $("#doctorTableBody").html(rows);
+}
+
+function editDoctor(doctor) {
+    $("#formTitle").text("Edit Doctor");
+    $("#doctorId").val(doctor.id);
+    $("#name").val(doctor.name || "");
+    $("#profession").val(doctor.profession || "");
+}
+
+function deleteDoctor(id) {
+    if (!confirm("Are you sure you want to delete this doctor?")) return;
+    $.ajax({
+        url: `${API_URL}/${id}`,
+        type: "DELETE",
+        success: function () { showMessage("Doctor deleted successfully.", "positive"); loadDoctors(); },
+        error: function () { showMessage("Could not delete doctor.", "negative"); }
+    });
+}
+
+function clearForm() {
+    $("#formTitle").text("Add Doctor");
+    $("#doctorId").val("");
+    $("#doctorForm")[0].reset();
+}
+
+function showMessage(text, type) {
+    $("#message").removeClass("positive negative warning").addClass(type).html(text).fadeIn();
+    setTimeout(function () { $("#message").fadeOut(); }, 3500);
+}
+</script>
+</body>
+</html>

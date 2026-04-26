@@ -1,0 +1,373 @@
+<!-- Mohamed Ahmed 767000238 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback List</title>
+
+    <!-- jQuery + Semantic UI -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f4f7f9;
+            padding: 30px;
+        }
+
+        .main.container {
+            margin-top: 25px;
+        }
+
+        .page-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        #message {
+            display: none;
+        }
+
+        .table-actions {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="ui main container">
+
+    <div class="ui blue inverted menu">
+        <a class="header item" href="index.html">SpiRIT Psychology</a>
+        <a class="item" href="index.html">Home</a>
+        <a class="item" href="patients.html">Patients</a>
+        <a class="item" href="doctors.html">Doctors</a>
+        <a class="item" href="appointments.html">Appointments</a>
+        <a class="item active" href="feedbacks.html">Feedback</a>
+    </div>
+
+    <div class="page-card">
+        <h1 class="ui header">
+            <i class="comments outline icon"></i>
+            <div class="content">
+                Feedback List
+                <div class="sub header">View, add, edit, delete, and search feedback</div>
+            </div>
+        </h1>
+
+        <div id="message" class="ui message"></div>
+
+        <div class="ui stackable grid">
+            <div class="ten wide column">
+                <div class="ui action input fluid">
+                    <input type="text" id="searchValue" placeholder="Search by patient, doctor, rating, or comment">
+                    <button class="ui blue button" id="searchBtn">
+                        <i class="search icon"></i>
+                        Search
+                    </button>
+                    <button class="ui button" id="showAllBtn">Show All</button>
+                </div>
+            </div>
+
+            <div class="six wide right aligned column">
+                <button class="ui primary button" id="loadBtn">
+                    <i class="sync icon"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <div class="page-card" id="formCard">
+        <h3 class="ui dividing header" id="formTitle">Add Feedback</h3>
+
+        <form class="ui form" id="feedbackForm">
+            <input type="hidden" id="feedbackId">
+
+            <div class="three fields">
+                <div class="field">
+                    <label>Patient Name</label>
+                    <input type="text" id="patientName" placeholder="Patient name" required>
+                </div>
+
+                <div class="field">
+                    <label>Doctor Name</label>
+                    <input type="text" id="doctorName" placeholder="Doctor name" required>
+                </div>
+
+                <div class="field">
+                    <label>Rating</label>
+                    <input type="number" id="rating" min="1" max="5" placeholder="1-5" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Comment</label>
+                <textarea id="comment" rows="3" placeholder="Feedback comment" required></textarea>
+            </div>
+
+            <button type="submit" class="ui green button">
+                <i class="save icon"></i>
+                Save
+            </button>
+
+            <button type="button" class="ui button" id="clearBtn">
+                Clear
+            </button>
+        </form>
+    </div>
+
+    <!-- Feedback Table -->
+    <div class="page-card">
+        <h3 class="ui dividing header">Feedback</h3>
+
+        <table class="ui celled striped compact table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th class="right aligned">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody id="feedbackTableBody"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    const API_URL = "/api/feedbacks";
+
+        loadFeedbacks();
+
+        $("#loadBtn").click(function () {
+            loadFeedbacks();
+        });
+
+        $("#showAllBtn").click(function () {
+            $("#searchValue").val("");
+            loadFeedbacks();
+        });
+
+        $("#searchBtn").click(function () {
+            searchFeedbacks();
+        });
+
+        $("#clearBtn").click(function () {
+            clearForm();
+        });
+
+        $("#feedbackForm").submit(function (event) {
+            event.preventDefault();
+            saveFeedback();
+        });
+
+    function loadFeedbacks() {
+        $.get(API_URL, function (feedbacks) {
+            displayFeedbacks(feedbacks);
+        }).fail(function () {
+            showMessage("Could not load feedback", "negative");
+        });
+    }
+
+    function searchFeedbacks() {
+        let value = $("#searchValue").val().trim();
+
+        if (value === "") {
+            loadFeedbacks();
+            return;
+        }
+
+        let searchUrls = [
+            `${API_URL}/search/doctor?name=${encodeURIComponent(value)}`,
+            `${API_URL}/search/patient?name=${encodeURIComponent(value)}`,
+            `${API_URL}/search/rating?rating=${encodeURIComponent(value)}`,
+            `${API_URL}/search/comment?keyword=${encodeURIComponent(value)}`
+        ];
+
+        trySearchUrl(searchUrls, 0);
+    }
+
+    function trySearchUrl(urls, index) {
+        if (index >= urls.length) {
+            displayFeedbacks([]);
+            showMessage("No feedback found.", "warning");
+            return;
+        }
+
+        $.get(urls[index], function (feedbacks) {
+            if (feedbacks && feedbacks.length > 0) {
+                displayFeedbacks(feedbacks);
+            } else {
+                trySearchUrl(urls, index + 1);
+            }
+        }).fail(function () {
+            trySearchUrl(urls, index + 1);
+        });
+    }
+
+    function saveFeedback() {
+        let id = $("#feedbackId").val();
+
+        let feedback = {
+            patient: {
+                name: $("#patientName").val()
+            },
+            doctor: {
+                name: $("#doctorName").val()
+            },
+            rating: parseInt($("#rating").val()),
+            comment: $("#comment").val()
+        };
+
+        let methodType;
+        let url;
+
+        if (id) {
+            methodType = "PUT";
+            url = API_URL + "/" + id;
+        } else {
+            methodType = "POST";
+            url = API_URL;
+        }
+
+        $.ajax({
+            url: url,
+            type: methodType,
+            contentType: "application/json",
+            data: JSON.stringify(feedback),
+            success: function () {
+                if (id) {
+                    showMessage("Feedback updated successfully.", "positive");
+                } else {
+                    showMessage("Feedback added successfully.", "positive");
+                }
+                clearForm();
+                loadFeedbacks();
+            },
+            error: function () {
+                showMessage("Could not save feedback. Check the JSON body and required fields.", "negative");
+            }
+        });
+    }
+
+    function displayFeedbacks(feedbacks) {
+        let rows = "";
+
+        if (!feedbacks || feedbacks.length === 0) {
+            $("#feedbackTableBody").html(`
+                <tr>
+                    <td colspan="6" class="center aligned">No feedback found.</td>
+                </tr>
+            `);
+            return;
+        }
+
+        feedbacks.forEach(function (feedback) {
+            let patientName;
+            if (feedback.patient && feedback.patient.name) {
+                patientName = feedback.patient.name;
+            } else {
+                patientName = "N/A";
+            }
+
+            let doctorName;
+            if (feedback.doctor && feedback.doctor.name) {
+                doctorName = feedback.doctor.name;
+            } else {
+                doctorName = "N/A";
+            }
+
+            rows += `
+                <tr>
+                    <td>${feedback.id}</td>
+                    <td>${patientName}</td>
+                    <td>${doctorName}</td>
+                    <td>${feedback.rating || ""}</td>
+                    <td>${feedback.comment || ""}</td>
+                    <td class="right aligned table-actions">
+                        <button class="ui tiny yellow button" onclick='editFeedback(${JSON.stringify(feedback)})'>
+                            <i class="edit icon"></i>
+                            Edit
+                        </button>
+                        <button class="ui tiny red button" onclick="deleteFeedback(${feedback.id})">
+                            <i class="trash icon"></i>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        $("#feedbackTableBody").html(rows);
+    }
+
+    function editFeedback(feedback) {
+        $("#formTitle").text("Edit Feedback");
+        $("#feedbackId").val(feedback.id);
+        $("#rating").val(feedback.rating || "");
+        $("#comment").val(feedback.comment || "");
+
+        let patientName = "";
+        if (feedback.patient && feedback.patient.name) {
+            patientName = feedback.patient.name;
+        }
+
+        let doctorName = "";
+        if (feedback.doctor && feedback.doctor.name) {
+            doctorName = feedback.doctor.name;
+        }
+
+        $("#patientName").val(patientName);
+        $("#doctorName").val(doctorName);
+    }
+
+    function deleteFeedback(id) {
+        if (!confirm("Are you sure you want to delete this feedback?")) {
+            return;
+        }
+
+        $.ajax({
+            url: `${API_URL}/${id}`,
+            type: "DELETE",
+            success: function () {
+                showMessage("Feedback deleted successfully.", "positive");
+                loadFeedbacks();
+            },
+            error: function () {
+                showMessage("Could not delete feedback.", "negative");
+            }
+        });
+    }
+
+    function clearForm() {
+        $("#formTitle").text("Add Feedback");
+        $("#feedbackId").val("");
+        $("#feedbackForm")[0].reset();
+    }
+
+    function showMessage(text, type) {
+        $("#message")
+            .removeClass("positive negative warning")
+            .addClass(type)
+            .html(text)
+            .fadeIn();
+
+        setTimeout(function () {
+            $("#message").fadeOut();
+        }, 3500);
+    }
+</script>
+
+</body>
+</html>

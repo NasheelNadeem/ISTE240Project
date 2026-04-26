@@ -1,40 +1,87 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SpiRIT Psychology Appointments</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpiRIT Psychology Appointment System</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+<style>
+body { background-color: #f4f7f9; padding: 30px; }
+.main.container { margin-top: 25px; }
+.page-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+.hero { text-align: center; padding: 45px 25px; }
+.module-card { height: 100%; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>SpiRIT Psychology Appointment System</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="add-appointment.html">Book Appointment</a>
-      <a href="/appointments">View Appointments</a>
-      <a href="/feedbacks">View Feedback</a>
-      <a href="/addFeedback">Add Feedback</a>
-      <a href="/userAccounts">View User Accounts</a>
-      <a href="/addUserAccount">Add User Account</a>
-    </nav>
-  </header>
+<div class="ui main container">
 
-  <main>
-    <h2>Book a session with ease</h2>
-    <p>Simple, calm, and clear booking experience.</p>
+<div class="ui blue inverted menu">
+    <a class="header item" href="index.html">SpiRIT Psychology</a>
+    <a class="item active" href="index.html">Home</a>
+    <a class="item " href="patients.html">Patients</a>
+    <a class="item " href="doctors.html">Doctors</a>
+    <a class="item " href="appointments.html">Appointments</a>
+    <a class="item " href="feedbacks.html">Feedback</a>
+</div>
+    <div class="page-card hero">
+        <h1 class="ui huge header">
+            <i class="heartbeat icon"></i>
+            <div class="content">
+                SpiRIT Psychology Appointment System
+                <div class="sub header">Simple, calm, and clear clinic management</div>
+            </div>
+        </h1>
+        <p>Manage patients, doctors, appointments, and feedback through one organized web application.</p>
+    </div>
 
-    <section>
-      <h3>Next steps</h3>
-      <ol>
-        <li>Choose a therapist</li>
-        <li>Select a date & time</li>
-        <li>Confirm your appointment</li>
-      </ol>
-    </section>
-  </main>
+    <div class="ui stackable four cards">
+        <div class="ui card module-card">
+            <div class="content">
+                <div class="header"><i class="user outline icon"></i> Patients</div>
+                <div class="description">View, add, edit, delete, and search patient records.</div>
+            </div>
+            <div class="extra content"><a class="ui blue fluid button" href="patients.html">Open Patients</a></div>
+        </div>
+        <div class="ui card module-card">
+            <div class="content">
+                <div class="header"><i class="user md icon"></i> Doctors</div>
+                <div class="description">Manage doctors and their professional specializations.</div>
+            </div>
+            <div class="extra content"><a class="ui blue fluid button" href="doctor.html">Open Doctors</a></div>
+        </div>
+        <div class="ui card module-card">
+            <div class="content">
+                <div class="header"><i class="calendar alternate outline icon"></i> Appointments</div>
+                <div class="description">Book, update, delete, and search clinic appointments.</div>
+            </div>
+            <div class="extra content"><a class="ui blue fluid button" href="appointments.html">Open Appointments</a></div>
+        </div>
+        <div class="ui card module-card">
+            <div class="content">
+                <div class="header"><i class="comments outline icon"></i> Feedback</div>
+                <div class="description">Review and manage patient feedback after sessions.</div>
+            </div>
+            <div class="extra content"><a class="ui blue fluid button" href="feedbacks.html">Open Feedback</a></div>
+        </div>
+    </div>
 
-  <footer>
-    <p>&copy; SpiRIT</p>
-  </footer>
+    <div class="page-card">
+        <h3 class="ui dividing header">Next Steps</h3>
+        <div class="ui ordered steps">
+            <div class="step"><div class="content"><div class="title">Add Patients</div><div class="description">Create patient records</div></div></div>
+            <div class="step"><div class="content"><div class="title">Add Doctors</div><div class="description">Register clinic specialists</div></div></div>
+            <div class="step"><div class="content"><div class="title">Book Appointments</div><div class="description">Schedule sessions</div></div></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
