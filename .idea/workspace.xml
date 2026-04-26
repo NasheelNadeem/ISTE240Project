@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ba5533e8-a555-4679-a503-eebece6d0039" name="Changes" comment="Implemented the doctor services, controller, and add table view">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/controllers/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/controllers/AppointmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/controllers/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/controllers/DoctorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/models/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/models/Doctor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/services/FeedbackServices.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/services/PatientServices.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/services/ProjectServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/services/ProjectServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpiRIT-assignment1-Group4/src/main/java/org/example/spiritassignment1group4/services/UserAccountServices.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/hp/IdeaProjects/ISTE 240/Project" value="39qTh1dV12We4WkD362SitE2Fto" />
+    </persistenceIdMap>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="maa5277" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;NasheelNadeem&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/NasheelNadeem/ISTE240Project.git",
+    "accountId": "34f7dbbe-07ec-40c2-8417-ac06552a42bd"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="39qTh1dV12We4WkD362SitE2Fto" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "Nasheel-Nadeem",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/hp/IdeaProjects/ISTE 240/Project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ba5533e8-a555-4679-a503-eebece6d0039" name="Changes" comment="" />
+      <created>1771422716600</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1771422716600</updated>
+      <workItem from="1771422717754" duration="22000" />
+      <workItem from="1774426248001" duration="634000" />
+      <workItem from="1774854986252" duration="394000" />
+      <workItem from="1776752046450" duration="19000" />
+    </task>
+    <task id="LOCAL-00001" summary="Implemented the doctor services, controller, and add table view">
+      <option name="closed" value="true" />
+      <created>1774426570832</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774426570832</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Implemented the doctor services, controller, and add table view" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented the doctor services, controller, and add table view" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

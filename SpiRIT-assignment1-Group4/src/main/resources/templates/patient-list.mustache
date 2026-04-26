@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Table</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Patient List</h2>
+
+<table class="ui striped table">
+    <thead>
+    <tr>
+        <th>Patient Name</th>
+        <th>Patient ID</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {{#patients}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{patientID}}</td>
+        </tr>
+    {{/patients}}
+    </tbody>
+
+</table>
+
+<a href="/patient/add">Add Patient</a>
+
+</body>
+</html>
