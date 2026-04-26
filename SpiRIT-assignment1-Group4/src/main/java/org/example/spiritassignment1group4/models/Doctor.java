@@ -2,6 +2,7 @@ package org.example.spiritassignment1group4.models;
 
 import jakarta.persistence.*;
 
+//Nasheel Nadeem 764000112
 @Entity
 @Table(name = "doctors")
 public class Doctor {
@@ -9,8 +10,9 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
+    @Column(name = "profession", length = 50, nullable = true)
     private String profession;
 
     public Doctor() {}
