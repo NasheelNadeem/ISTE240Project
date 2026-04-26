@@ -20,6 +20,9 @@ import java.util.Optional;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
 
+    List<Patient> findAll();
+
+    Optional<Patient> findById(Long id);
 
     List<Patient> findByName(String name);
 
