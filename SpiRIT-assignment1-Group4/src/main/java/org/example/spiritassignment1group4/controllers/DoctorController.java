@@ -52,5 +52,6 @@ public class DoctorController {
     public void deleteDoctor(@PathVariable Long id) {
         doctorservice.deleteDoctor(id);
     }
-}
 
+
+}

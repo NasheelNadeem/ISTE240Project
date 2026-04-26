@@ -1,4 +1,3 @@
-// Nasheel Nadeem - 764000112
 package org.example.spiritassignment1group4.services;
 
 import org.example.spiritassignment1group4.models.Doctor;
@@ -11,37 +10,37 @@ import java.util.Optional;
 @Service
 public class DoctorService {
 
-    private final DoctorRepository doctorrepository;
+    private final DoctorRepository doctorRepository;
 
-    public DoctorService(DoctorRepository doctorrepository) {
-        this.doctorrepository = doctorrepository;
+    public DoctorService(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
     }
 
     public List<Doctor> getAllDoctors() {
-        return doctorrepository.findAll();
+        return doctorRepository.findAll();
     }
 
     public Optional<Doctor> getDoctorById(Long id) {
-        return doctorrepository.findById(id);
+        return doctorRepository.findById(id);
     }
 
     public List<Doctor> searchByName(String name) {
-        return doctorrepository.findByName(name);
+        return doctorRepository.findByName(name);
     }
 
     public Doctor addDoctor(Doctor doctor) {
-        return doctorrepository.save(doctor);
+        return doctorRepository.save(doctor);
     }
 
     public Doctor updateDoctor(Long id, Doctor updatedDoctor) {
-        return doctorrepository.findById(id).map(doc -> {
+        return doctorRepository.findById(id).map(doc -> {
             doc.setName(updatedDoctor.getName());
             doc.setProfession(updatedDoctor.getProfession());
-            return doctorrepository.save(doc);
+            return doctorRepository.save(doc);
         }).orElse(null);
     }
 
     public void deleteDoctor(Long id) {
-        doctorrepository.deleteById(id);
+        doctorRepository.deleteById(id);
     }
 }
