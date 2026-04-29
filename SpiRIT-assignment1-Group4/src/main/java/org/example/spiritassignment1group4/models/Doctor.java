@@ -2,6 +2,8 @@ package org.example.spiritassignment1group4.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 //Nasheel Nadeem 764000112
 @Entity
 @Table(name = "doctors")
@@ -14,6 +16,12 @@ public class Doctor {
     private String name;
     @Column(name = "profession", length = 50, nullable = true)
     private String profession;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feedback> feedbacks;
 
     public Doctor() {}
 
